@@ -1,0 +1,255 @@
+<html>
+	<head>
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="../engine/LinkedList.js"></script>
+	<script type="text/javascript" src="../engine/Particle.js"></script>
+	<script type="text/javascript" src="../engine/Emitter.js"></script>
+	
+	<link href="wizard.css" rel="stylesheet" type="text/css">
+	</head>
+	
+	<body>
+		<script type="text/javascript">
+			var emitter;
+			var draw = {};
+
+			function goTick(draw) {
+				draw.ctx.fillStyle = "rgb(0,0,0)";
+				draw.ctx.fillRect(0, 0, draw.canvas.width, draw.canvas.height);
+				emitter.tick();
+			}
+
+			function initCanvas() {
+				var draw = {};
+				canvas = document.getElementById('screen');
+				draw.canvas = canvas;
+				ctx = canvas.getContext('2d');
+				draw.ctx = ctx;
+				return draw;
+			}
+
+			function changeInterval(interval) {
+				if(typeof changeInterval.intervalID != 'undefined')
+					clearInterval(changeInterval.intervalID);
+
+				changeInterval.intervalID = setInterval('goTick(draw)', interval);
+			}
+
+			
+			$(function(){
+				draw = this.draw = initCanvas();
+				emitter = new Emitter(this.draw.ctx);
+				emitter.posx = this.draw.canvas.width/2;
+				emitter.posy = this.draw.canvas.height/2;
+				changeInterval($('#interval').val());
+				setEmitterData(emitter);
+				
+				$('.button.border').bind('click', function() {
+					if($(this).html() == 'Smoke') {
+						$('#for_toosh').toggle('fast');
+						setTimeout(function(){$('#for_toosh').toggle('fast');}, 2000);
+						setSliders({min_speed : 0,max_speed : 2,start_size : {x:5,y:5},end_size : {x:16,y:16},burst_count : 24,burst_rate : 1,min_angle : 0,max_angle : 360,accelx : 11,accely : -23,life : 42, radius : 0, shape : 'ellipse', point_motion : false, emitter_rot : 0, start_rgba : {r:255,g:253, b:255,a:255},end_rgba : {r:156,g:147, b:136,a:0}});
+						setEmitterData(emitter);
+					}
+					else if($(this).html() == 'Stars') {
+						setSliders({min_speed : 4, max_speed : 14, start_size : {x:0,y:0}, end_size : {x:19,y:4}, burst_count : 19, burst_rate : 3, min_angle : 0, max_angle : 360, accelx : 0, accely : 0, life : 56, radius : 0, shape : 'ellipse', point_motion : true, emitter_rot : 0, start_rgba : {r:255,g:253, b:255,a:255}, end_rgba : {r:255,g:255, b:255,a:255}});
+						setEmitterData(emitter);
+					}
+					else if($(this).html() == 'Fire') {
+						setSliders({min_speed : 2,max_speed : 3,start_size : {x:10,y:11},end_size : {x:0,y:16},burst_count : 13,burst_rate : 2,min_angle : 0,max_angle : 360,accelx : 0,accely : -27,life : 32, radius : 0, shape : 'ellipse', point_motion : false, emitter_rot : 0, start_rgba : {r:145,g:0, b:0,a:255},end_rgba : {r:255,g:255, b:0,a:0}});
+						setEmitterData(emitter);
+					}
+					else if($(this).html() == 'Fountain') {
+						setSliders({min_speed : 5,max_speed : 5,start_size : {x:2,y:2},end_size : {x:8,y:16},burst_count : 26,burst_rate : 1,min_angle : 0,max_angle : 360,accelx : 0,accely : 44,life : 32, radius : 0, shape : 'ellipse', point_motion : false, emitter_rot : 0, start_rgba : {r:253,g:255, b:255,a:117},end_rgba : {r:151,g:158, b:253,a:0}});
+						setEmitterData(emitter);
+					}
+					else if($(this).html() == 'Fireworks') {
+						setSliders({min_speed : 1,max_speed : 6,start_size : {x:9,y:9},end_size : {x:0,y:0},burst_count : 38,burst_rate : 30,min_angle : 0,max_angle : 360,accelx : 0,accely : 0,life : 20, radius : 0, shape : 'square', point_motion : false, emitter_rot : 0, start_rgba : {r:0,g:255, b:0,a:255},end_rgba : {r:0,g:255, b:255,a:2}});
+						setEmitterData(emitter);
+					}
+					else if($(this).html() == 'Ripple') {
+						setSliders({min_speed : 2, max_speed : 3, start_size : {x:6,y:13}, end_size : {x:0,y:16}, burst_count : 14, burst_rate : 1, min_angle : 0, max_angle : 360, accelx : 0, accely : 0, life : 49, radius : 28, shape : 'ellipse', point_motion : true, emitter_rot : 0, start_rgba : {r:145,g:0, b:255,a:108}, end_rgba : {r:2,g:255, b:0,a:0}});
+						setEmitterData(emitter);
+					}
+
+				});
+				$('.startc').bind('change', function() {
+					emitter.set_start_rgba((Number)($('#start_r').val()),(Number)($('#start_g').val()),(Number)($('#start_b').val()),(Number)($('#start_a').val()));
+				});
+				$('.endc').bind('change', function() {
+					emitter.set_end_rgba((Number)($('#end_r').val()),(Number)($('#end_g').val()),(Number)($('#end_b').val()),(Number)($('#end_a').val()));
+				});
+				$('.starts').bind('change', function() {
+					emitter.start_size = {x : (Number)($('#start_x').val()), y : (Number)($('#start_y').val())};
+				});
+				$('.ends').bind('change', function() {
+					emitter.end_size = {x : (Number)($('#end_x').val()), y : (Number)($('#end_y').val())};
+				});
+			})
+
+			function setEmitterData(emitter) {
+				emitter.set_start_rgba((Number)($('#start_r').val()),(Number)($('#start_g').val()),(Number)($('#start_b').val()),(Number)($('#start_a').val()));
+				emitter.set_end_rgba((Number)($('#end_r').val()),(Number)($('#end_g').val()),(Number)($('#end_b').val()),(Number)($('#end_a').val()));
+				emitter.start_size = {x : (Number)($('#start_x').val()), y : (Number)($('#start_y').val())};
+				emitter.end_size = {x : (Number)($('#end_x').val()), y : (Number)($('#end_y').val())};
+				emitter.life = (Number)($('#life').val());
+				emitter.accelx = 0.01*(Number)($('#accelx').val());
+				emitter.accely = (Number)($('#accely').val())*0.01;
+				emitter.min_speed = (Number)($('#min_speed').val());
+				emitter.max_speed = (Number)($('#max_speed').val());
+				emitter.min_angle = (Number)($('#min_angle').val());
+				emitter.max_angle = (Number)($('#max_angle').val());
+				emitter.burst_rate = (Number)($('#burst_rate').val());
+				emitter.burst_count = (Number)($('#burst_count').val());
+				emitter.shape = $('#shape').val();
+				emitter.radius = $('#radius').val();
+				emitter.emitter_rot = $('#emitter_rot').val();
+				emitter.targetx = $('#targetx').val();
+				emitter.targety = $('#targety').val();
+				emitter.target = $('#target').attr('checked');
+				emitter.point_motion = $('#point_motion').attr('checked');
+			}
+
+			function setSliders(values) {
+				$('#start_r').val(values.start_rgba.r);
+				$('#start_g').val(values.start_rgba.g);
+				$('#start_b').val(values.start_rgba.b);
+				$('#start_a').val(values.start_rgba.a);
+				$('#end_r').val(values.end_rgba.r);
+				$('#end_g').val(values.end_rgba.g);
+				$('#end_b').val(values.end_rgba.b);
+				$('#end_a').val(values.end_rgba.a);
+				$('#start_x').val(values.start_size.x);
+				$('#start_y').val(values.start_size.y);
+				$('#end_x').val(values.end_size.x);
+				$('#end_y').val(values.end_size.y);
+				$('#min_speed').val(values.min_speed);
+				$('#max_speed').val(values.max_speed);
+				$('#min_angle').val(values.min_angle);
+				$('#max_angle').val(values.max_angle);
+				$('#burst_count').val(values.burst_count);
+				$('#burst_rate').val(values.burst_rate);
+				$('#accelx').val(values.accelx);
+				$('#accely').val(values.accely);
+				$('#targetx').val(values.targetx);
+				$('#targety').val(values.targety);
+				$('#target').attr('checked', values.target);
+				$('#life').val(values.life);
+				$('#radius').val(values.radius);
+				$('#emitter_rot').val(values.emitter_rot);
+				$('#point_motion').attr('checked', values.point_motion);
+				$('#shape option[value='+values.shape+']').attr('selected', 'selected');
+			}
+		</script>
+		<div class="canvas_cont border">
+			<canvas class="" id="screen" width="400" height="300">
+				Your browser does not support HTML5 canvas
+			</canvas>
+		</div>
+		<div class="cpanel border">
+			<div class="part_vars border">
+				<div class="title">Particle Variables</div>
+				<div class="colors">
+					<div class="start">
+						<div class="subtitle">Start Color</div>
+						<label>Red:</label>
+						<input type="range" min="0" max="255" step="1" value="255" id="start_r" class="startc"><br>
+						<label>Green:</label>
+						<input type="range" min="0" max="255" step="1" value="0" id="start_g" class="startc"><br>
+						<label>Blue:</label>
+						<input type="range" min="0" max="255" step="1" value="255" id="start_b" class="startc"><br>
+						<label>Alpha:</label>
+						<input type="range" min="0" max="255" step="1" value="255" id="start_a"  class="startc">
+					</div>
+					<div class="end">
+						<div class="subtitle">End Color</div>
+						<label>Red:</label>
+						<input type="range" min="0" max="255" step="1" value="0" id="end_r" class="endc"><br>
+						<label>Green:</label>
+						<input type="range" min="0" max="255" step="1" value="255" id="end_g" class="endc"><br>
+						<label>Blue:</label>
+						<input type="range" min="0" max="255" step="1" value="0" id="end_b" class="endc"><br>
+						<label>Alpha:</label>
+						<input type="range" min="0" max="255" step="1" value="255" id="end_a" class="endc">
+					</div>
+				</div>
+				<div class="shape">
+					<div class="subtitle">Shapes</div>
+					<label>Shape: </label>
+					<select id="shape" onchange="emitter.shape = $(this).val()">
+						<option value="square">Square</option>
+						<option value="ellipse">Ellipse</option>
+					</select><br>
+
+					<input type="checkbox" id="point_motion" onchange="emitter.point_motion = $(this).attr('checked');console.log($(this).val());"> Particles point motion direction
+				</div>
+				<div class="sizes">
+					<div class="start">
+						<div class="subtitle">Start Size</div>
+						<label>X:</label>
+						<input type="range" min="0" max="30" step="1" value="5" id="start_x" class="starts"><br>
+						<label>Y:</label>
+						<input type="range" min="0" max="30" step="1" value="5" id="start_y" class="starts"><br>
+					</div>
+					<div class="end">
+						<div class="subtitle">End Size</div>
+						<label>X:</label>
+						<input type="range" min="0" max="30" step="1" value="10" id="end_x" class="ends"><br>
+						<label>Y:</label>
+						<input type="range" min="0" max="30" step="1" value="2" id="end_y" class="ends"><br>
+					</div>
+				</div>
+			</div>
+
+			<div class="system border">
+				<div class="title">System Vars</div>
+				<label>Interval</label>
+				<input type="range" min="1" max="1000" step="1" value="50" id="interval" onchange="changeInterval($(this).val())"><br>
+				<label>Burst rate</label>
+				<input type="range" min="1" max="50" step="1" value="10" id="burst_rate" onchange="emitter.burst_rate = (Number)($(this).val())"><br>
+				<label>Burst count</label>
+				<input type="range" min="1" max="50" step="1" value="10" id="burst_count" onchange="emitter.burst_count = (Number)($(this).val())"><br>
+				<label>Minspeed</label>
+				<input type="range" min="0" max="20" step="1" value="1" id="min_speed" onchange="emitter.min_speed = (Number)($(this).val())"><br>
+				<label>Maxspeed</label>
+				<input type="range" min="0" max="20" step="1" value="10" id="max_speed" onchange="emitter.max_speed = (Number)($(this).val())"><br>
+				<label>Min angle</label>
+				<input type="range" min="0" max="360" step="1" value="0" id="min_angle" onchange="emitter.min_angle = (Number)($(this).val())"><br>
+				<label>Max angle</label>
+				<input type="range" min="0" max="360" step="1" value="360" id="max_angle" onchange="emitter.max_angle = (Number)($(this).val())"><br>
+				<label>Radius</label>
+				<input type="range" min="0" max="100" step="1" value="0" id="radius" onchange="emitter.radius = (Number)($(this).val())"><br>
+				<label>Emitter Rot</label>
+				<input type="range" min="-45" max="45" step="1" value="0" id="emitter_rot" onchange="emitter.emitter_rot = (Number)($(this).val())"><br>
+
+				<label>Accel X</label>
+				<input type="range" min="-500" max="500" step="1" value="0" id="accelx" onchange="emitter.accelx = 0.01*(Number)($(this).val())"><br>
+				<label>Accel Y</label>
+				<input type="range" min="-500" max="500" step="1" value="0" id="accely" onchange="emitter.accely = 0.01*(Number)($(this).val())"><br>
+
+				<label>Target X</label>
+				<input type="range" min="0" max="400" step="1" value="200" id="targetx" onchange="emitter.targetx = (Number)($(this).val())"><br>
+				<label>Target Y</label>
+				<input type="range" min="0" max="300" step="1" value="150" id="targety" onchange="emitter.targety = (Number)($(this).val())"><br>
+				<input type="checkbox" id="target" onchange="emitter.target = $(this).attr('checked');console.log($(this).val());"> Go to target
+
+
+				<label>Life</label>
+				<input type="range" min="1" max="100" step="1" value="20" id="life" onchange="emitter.life = (Number)($(this).val())"><br>
+			</div>
+			<div class="presets border">
+				<div class="title">Presets</div>
+				<div class="button border" style="background-color:darkgrey">Smoke</div>
+				<div class="button border" style="background-color:white">Stars</div>
+				<div class="button border" style="background-color:orange">Fire</div>
+				<div class="button border" style="background-color:cyan">Fountain</div>
+				<div class="button border" style="background-color:red">Fireworks</div>
+				<div class="button border" style="background-color:purple">Ripple</div>
+			</div>
+			<div id="for_toosh" style="display:none;float:right;font-size:25px;font-weight:bold;color:#FFF;margin:20px">
+				Smoke for Toosh!!
+			</div>
+			<div class="give_effect border" onclick="console.log(emitter.getEffect())">Give Effect</div>
+		</div>
+	</body>
+</html>

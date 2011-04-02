@@ -1,0 +1,28 @@
+html {background-color:#555;}
+html *{font-size:12px;margin:0;padding:0}
+
+label {width:70px;display:block;float:left}
+.border {border:1px solid #333;border-radius:6px;}
+
+.canvas_cont {float:left;margin:10px;overflow:hidden}
+.cpanel {float:right;width:700px;margin:10px;padding:5px;}
+
+.cpanel .title {font-size:14px;font-weight:bold}
+.cpanel .subtitle {font-size:13px;font-weight:bold}
+.cpanel .part_vars {padding:5px;background-color:burlywood;display:table}
+.cpanel .part_vars .colors {display:table;float:left}
+.cpanel .part_vars .colors .start {float:left}
+.cpanel .part_vars .colors .end {float:left;margin-left:10px}
+
+.cpanel .part_vars .sizes {display:table;float:left;margin-top:8px}
+.cpanel .part_vars .sizes .start {float:left}
+.cpanel .part_vars .sizes .end {float:left;margin-left:10px}
+
+.cpanel .part_vars .shape {display:table;float:left;margin:0 0 0 10px}
+
+.cpanel .system {display:table;float:left;margin-top:5px;padding:5px;background-color:#7F7}
+
+.cpanel .give_effect {cursor:pointer;clear:left;float:left;width:100px;height:25px;font-size:14px;font-weight:bold;background-color:#FF0;text-align:center;line-height:25px}
+.cpanel .presets {padding:5px;margin:5px;display:table;float:left;background-color: peru}
+.cpanel .presets .button {margin-top:5px;cursor:pointer;width:100px;height:25px;font-size:14px;font-weight:bold;text-align:center;line-height:25px}
+

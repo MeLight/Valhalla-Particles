@@ -1,0 +1,5 @@
+Valhalla Particles v0.01
+
+A set of JavaScript classes that enables generating particles effects using the HTML5 Canvas element.
+
+The only needed classes are in the engine folder. You can play with the wizard (wizard folder duh) to see what you can achieve and generate particle effects for your own use. The wizard is best viewed on Chrome (if you prefer sliders), FireFox 4 is also ok (if you prefer typing numbers in)
