@@ -1,28 +1,25 @@
-function Particle(posx, posy, speedx, speedy, start_size, end_size, life, accelx, accely, start_rgba, end_rgba,
-targetx, targety, target) {
-	this.posx = posx,
-	this.posy = posy,
-	this.speedx = speedx,
-	this.speedy = speedy,
-	this.size = {x:start_size.x, y:start_size.y},
-	this.size_step = {x:(end_size.x - start_size.x)/life, y:(end_size.y - start_size.y)/life},
-	this.init_life = this.life = life,
-	this.accelx = accelx,
-	this.accely = accely,
-	this.targetx = targetx,
-	this.targety = targety,
-	this.target = target,
-	this.curr_rgba = {r:start_rgba.r,g:start_rgba.g,b:start_rgba.b,a:start_rgba.a},
-	this.rgba_step ={r: (end_rgba.r - start_rgba.r)/life,
-		g: (end_rgba.g - start_rgba.g)/life,
-		b: (end_rgba.b - start_rgba.b)/life,
-		a: (end_rgba.a - start_rgba.a)/life};
-	if(target) {
+/*
+ * Particle class of the Valhalla project particles system.
+ */
+
+function Particle(values) {
+	for(var prop in values) {
+		this[prop] = values[prop];
+	}
+	this.size = {x: values.start_size.x, y:values.start_size.y};
+	this.size_step = {x:(values.end_size.x - values.start_size.x)/values.life, y:(values.end_size.y - values.start_size.y)/values.life};
+	this.init_life = this.life;
+	this.curr_rgba = {r:values.start_rgba.r,g:values.start_rgba.g,b:values.start_rgba.b,a:values.start_rgba.a},
+	this.rgba_step ={r: (values.end_rgba.r - values.start_rgba.r)/values.life,
+		g: (values.end_rgba.g - values.start_rgba.g)/values.life,
+		b: (values.end_rgba.b - values.start_rgba.b)/values.life,
+		a: (values.end_rgba.a - values.start_rgba.a)/values.life};
+	if(this.target) {
 		//jerkx = 6.0f*(targetx-x - speedx*life - 0.5f*accelx*life*life)/(life*life*life)
-		var life2 = life*life;
-		var life3 = life2*life;
-		this.jerkx = 6.0*(this.targetx - this.posx - this.speedx*life - 0.5*this.accelx*life2)/(life3);
-		this.jerky = 6.0*(this.targety - this.posy - this.speedy*life - 0.5*this.accely*life2)/(life3);
+		var life2 = values.life*values.life;
+		var life3 = life2*values.life;
+		this.jerkx = 6.0*(this.targetx - this.posx - this.speedx*values.life - 0.5*this.accelx*life2)/(life3);
+		this.jerky = 6.0*(this.targety - this.posy - this.speedy*values.life - 0.5*this.accely*life2)/(life3);
 	}
 }
 

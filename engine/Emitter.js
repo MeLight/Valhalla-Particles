@@ -1,3 +1,7 @@
+/*
+ * Emitter class of the Valhalla project particles system.
+ */
+
 function Emitter(ctx) {
 	this.ctx = ctx;
 	this.particles = new LinkedList();
@@ -134,14 +138,15 @@ Emitter.prototype.burst = function() {
 		var sin = Math.sin(randAngle);
 		var cos = Math.cos(randAngle);
 		var sp = Math.random()*(speed_d) + this.min_speed;
-		this.particles.addFirst(new Particle(
-			this.posx + (this.radius != 0 ? sin*this.radius : 0),
-			this.posy + (this.radius != 0 ? cos*this.radius : 0),
-			(sin*sp), (cos*sp),
-			this.start_size, this.end_size,
-			this.life,
-			this.accelx, this.accely,
-			this.start_rgba, this.end_rgba, this.targetx, this.targety, this.target)
+		this.particles.addFirst(new Particle({
+			posx : this.posx + (this.radius != 0 ? sin*this.radius : 0),
+			posy : this.posy + (this.radius != 0 ? cos*this.radius : 0),
+			speedx : (sin*sp), speedy : (cos*sp),
+			start_size : this.start_size, end_size : this.end_size,
+			life : this.life,
+			accelx : this.accelx, accely : this.accely,
+			start_rgba : this.start_rgba, end_rgba :this.end_rgba,
+			targetx : this.targetx, targety : this.targety, target : this.target})
 		);
 	}
 }
